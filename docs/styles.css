@@ -1,0 +1,11 @@
+body{
+    text-align: center;
+    color: gray;
+    font-size: 20px;
+}
+
+.jumbotron {
+    padding: 2%;
+    color: #fff;
+    background:  orange;
+}
