@@ -3,14 +3,17 @@ import logo from './logo.svg';
 import './App.css';
 
 import Item from './Item.js';
+import Btns from './Btns.js';
+import "./styles.css";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Shopping</h2>
+        <h1 class="jumbotron text-center">Shopping</h1>
+
+
         </div>
 
         <div className="form">
@@ -21,16 +24,7 @@ class App extends Component {
         </div>
 
 
-        <div id="buttons" className="row">
-            <div className="col-xs-6">
-              <button className="btn btn-primary" id="button-add">Add</button>
-            </div>
-            <div className="col-xs-6">
-
-              <button className="btn btn-primary" id="button-delete">Delete</button>
-            </div>
-        </div>
-
+        <Btns/>
       </div>
 
     );
