@@ -2,6 +2,7 @@
   "name": "shop",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://rossiilieva.github.io/shop/",
   "dependencies": {
     "cpx": "^1.5.0",
     "react": "^15.5.4",
@@ -16,6 +17,6 @@
     "postbuild": "cpx -v \"build/**\" docs",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
-    
+
   }
 }
