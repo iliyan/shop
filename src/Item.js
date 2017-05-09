@@ -4,9 +4,11 @@ class Item extends Component {
   render() {
 
     return (
-      <div className="Item">
+      <div className="checkbox">
+       <label>
         <input type="checkbox" id="check-one"/>
         {this.props.children}
+       </label>
       </div>
     );
   }
