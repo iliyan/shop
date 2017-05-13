@@ -9,7 +9,9 @@ class App extends Component {
 
   constructor() {
     super();
-    this.state = {list:['Milk', 'Eggs', 'Bread', 'Water','Gum']};
+    this.state = {
+        list:[]
+    };
   }
 
   onClickHandler(index) {
@@ -18,6 +20,18 @@ class App extends Component {
          newList.splice(index,1);
          return {list: newList};
       });
+  }
+  onChangeHandler(event) {
+   if (event.keyCode !== 13) return;
+   const newItem = event.target.value;
+   this.setState((oldState, props) => {
+     const newList = [...oldState.list , newItem];
+
+     return {list: newList};
+    });
+    // console.log(event.target.value);
+    console.log(event.keyCode);
+
   }
 
   render() {
@@ -36,6 +50,8 @@ class App extends Component {
                 <div className="col-lg-12">
 
                     <form>
+                      <input type="text"  onKeyUp={this.onChangeHandler.bind(this)}/>
+
                         {this.state.list.map((x, i) => (
                             <Item
                               index={i}
