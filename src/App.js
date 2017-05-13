@@ -27,8 +27,10 @@ class App extends Component {
    this.setState((oldState, props) => {
      const newList = [...oldState.list , newItem];
 
+
      return {list: newList};
     });
+    event.target.value = ''
     // console.log(event.target.value);
     console.log(event.keyCode);
 
