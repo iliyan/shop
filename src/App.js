@@ -6,7 +6,18 @@ import Btns from './Btns.js';
 
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {list:['Milk', 'Eggs', 'Bread', 'Water','Gum']};
+  }
+
+  onClickHandler() {
+      console.log('OOps!');
+  }
+
   render() {
+
     return (
 
         <div className="container">
@@ -21,11 +32,13 @@ class App extends Component {
                 <div className="col-lg-12">
 
                     <form>
-                        <Item>Milk</Item>
-                        <Item>Eggs</Item>
-                        <Item>Bread</Item>
-                        <Item>Water</Item>
-                        <Btns/>
+                        {this.state.list.map(x => (
+                            <Item>{x}</Item>
+                        ))}
+
+                        <button type="button" onClick={this.onClickHandler}
+                            className="btn btn-primary"
+                            id="button-del">Delete</button>
                     </form>
 
                 </div>
