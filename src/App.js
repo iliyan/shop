@@ -13,7 +13,9 @@ class App extends Component {
   }
 
   onClickHandler() {
-      console.log('OOps!');
+    //   this.state.list = this.state.list.slice(0,-1);
+    const newState = {list: this.state.list.slice(0,-1)};
+      this.setState(newState);
   }
 
   render() {
@@ -36,7 +38,8 @@ class App extends Component {
                             <Item>{x}</Item>
                         ))}
 
-                        <button type="button" onClick={this.onClickHandler}
+                        <button type="button"
+                            onClick={this.onClickHandler.bind(this)}
                             className="btn btn-primary"
                             id="button-del">Delete</button>
                     </form>
