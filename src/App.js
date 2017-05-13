@@ -13,11 +13,11 @@ class App extends Component {
   }
 
   onClickHandler(index) {
-       this.state.list.splice(index,1);
-      const newList =this.state.list;
-    //   this.state.list = this.state.list.slice(0,-1);
-    const newState = {list: newList};
-      this.setState(newState);
+      this.setState((oldState, props) => {
+         const newList = [...oldState.list];
+         newList.splice(index,1);
+         return {list: newList};
+      });
   }
 
   render() {
