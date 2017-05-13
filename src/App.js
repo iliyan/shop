@@ -12,9 +12,11 @@ class App extends Component {
     this.state = {list:['Milk', 'Eggs', 'Bread', 'Water','Gum']};
   }
 
-  onClickHandler() {
+  onClickHandler(index) {
+       this.state.list.splice(index,1);
+      const newList =this.state.list;
     //   this.state.list = this.state.list.slice(0,-1);
-    const newState = {list: this.state.list.slice(0,-1)};
+    const newState = {list: newList};
       this.setState(newState);
   }
 
@@ -34,14 +36,12 @@ class App extends Component {
                 <div className="col-lg-12">
 
                     <form>
-                        {this.state.list.map(x => (
-                            <Item>{x}</Item>
+                        {this.state.list.map((x, i) => (
+                            <Item
+                              index={i}
+                              onClick={this.onClickHandler.bind(this)}>{x}</Item>
                         ))}
 
-                        <button type="button"
-                            onClick={this.onClickHandler.bind(this)}
-                            className="btn btn-primary"
-                            id="button-del">Delete</button>
                     </form>
 
                 </div>
