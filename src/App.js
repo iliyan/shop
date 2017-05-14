@@ -4,13 +4,16 @@ import React, { Component } from 'react';
 import Item from './Item.js';
 import Btns from './Btns.js';
 
+import recipes from './recipes.json';
+console.log(recipes);
 
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
-        list:[]
+        list: [],
+        recipes: recipes.recipes
     };
   }
 
@@ -21,6 +24,11 @@ class App extends Component {
          return {list: newList};
       });
   }
+
+  onSelectRecipe(event) {
+      console.log(event.target.id);
+  }
+
   onChangeHandler(event) {
    if (event.keyCode !== 13) return;
    const newItem = event.target.value;
@@ -32,7 +40,6 @@ class App extends Component {
     });
     event.target.value = ''
     // console.log(event.target.value);
-    console.log(event.keyCode);
 
   }
 
@@ -49,7 +56,18 @@ class App extends Component {
 
         <div className="container">
             <div className="row">
-                <div className="col-lg-12">
+            <div className="col-xs-4">
+              <ul>
+              {this.state.recipes.map(r => (
+                  <li>
+                    <a href="#" id={r.recipe_id} onClick={this.onSelectRecipe.bind(this)}>
+                      {r.title}
+                    </a>
+                  </li>
+              ))}
+              </ul>
+            </div>
+            <div className="col-xs-8">
 
                     <form>
                       <input type="text"  onKeyUp={this.onChangeHandler.bind(this)}/>
