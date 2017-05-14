@@ -5,6 +5,7 @@ import Item from './Item.js';
 import Btns from './Btns.js';
 
 import recipes from './recipes.json';
+import r35592 from './35592.json';
 console.log(recipes);
 
 class App extends Component {
@@ -26,8 +27,13 @@ class App extends Component {
   }
 
   onSelectRecipe(event) {
-      console.log(event.target.id);
-  }
+      const id = event.target.value;
+      const ingredients = r35592.recipe.ingredients;
+      console.log(ingredients);
+      this.setState((oldState, props) => {
+         return {list: ingredients};
+      });
+ }
 
   onChangeHandler(event) {
    if (event.keyCode !== 13) return;
