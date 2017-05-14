@@ -28,6 +28,7 @@ class App extends Component {
 
   onSelectRecipe(event) {
       const id = event.target.value;
+      console.log(r35592.recipe);
       const ingredients = r35592.recipe.ingredients;
       console.log(ingredients);
       this.setState((oldState, props) => {
@@ -63,14 +64,25 @@ class App extends Component {
         <div className="container">
             <div className="row">
             <div className="col-xs-4">
-              <ul>
-              {this.state.recipes.map(r => (
-                  <li>
-                    <a href="#" id={r.recipe_id} onClick={this.onSelectRecipe.bind(this)}>
-                      {r.title}
-                    </a>
+              <ul className="media-list">
+              {this.state.recipes.map(r => {
+                  const style = {width: '64px', height: '64px'};
+
+                  return (
+                  <li className="media">
+                  <div className="media-left">
+                      <a href="#" id={r.recipe_id} onClick={this.onSelectRecipe.bind(this)}>
+                      <img style={style} className="media-object" src={r.image_url} alt="Image of a recipe"/>
+                      </a>
+                  </div>
+                  <div className="media-body">
+                     <h4 className="media-heading">{r.title}</h4>
+                  </div>
+
+
                   </li>
-              ))}
+                 );
+             })}
               </ul>
             </div>
             <div className="col-xs-8">
