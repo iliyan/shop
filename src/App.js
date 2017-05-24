@@ -6,8 +6,8 @@ import Btns from './Btns.js';
 
 import recipes from './recipes.json';
 import r35592 from './35592.json';
-console.log(recipes);
 
+// console.log(recipes);
 class App extends Component {
 
   constructor() {
@@ -18,33 +18,42 @@ class App extends Component {
     };
   }
 
-  onClickHandler(index) {
+  onIngredientDeleteHandler(index) {
       this.setState((oldState, props) => {
-         const newList = [...oldState.list];
-         newList.splice(index,1);
+         const newList = [...oldState.list]; // Making a copy of the current list because ...
+         newList.splice(index,1); // ... splice modifies its argument and that's a no-no in react
          return {list: newList};
       });
   }
 
   onSelectRecipe(event) {
-      const id = event.target.value;
-      console.log(r35592.recipe);
+      const id = event.target.value; //recipe identifier
+      console.log(r35592.recipe); // the dummy recipe we sre going to use (becsuse  thst's whst we hsve for now)
       const ingredients = r35592.recipe.ingredients;
       console.log(ingredients);
-      this.setState((oldState, props) => {
+
+      // This is what changes the component state, based on old state and props - it is
+      // returning the new component state.
+      function updateIngredientList(/* currentState, props */) {
          return {list: ingredients};
-      });
+      };
+
+      // This is how we REQUEST a state change in react
+      this.setState(updateIngredientList);
  }
 
   onChangeHandler(event) {
    if (event.keyCode !== 13) return;
-   const newItem = event.target.value;
+   const newItem = event.target.value; // See MDN for JS event definitions
    this.setState((oldState, props) => {
+       // Making a copy of the current list because ...
+       // ... splice modifies its argument and that's a no-no in react
      const newList = [...oldState.list , newItem];
 
-
+     // the new state
      return {list: newList};
     });
+
     event.target.value = ''
     // console.log(event.target.value);
 
@@ -93,7 +102,7 @@ class App extends Component {
                         {this.state.list.map((x, i) => (
                             <Item
                               index={i}
-                              onClick={this.onClickHandler.bind(this)}>{x}</Item>
+                              onClick={this.onIngredientDeleteHandler.bind(this)}>{x}</Item>
                         ))}
 
                     </form>
