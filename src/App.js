@@ -9,7 +9,6 @@ import Item from './Item.js';
 
 //import recipes from './recipes.json';
 
-// console.log(recipes);
 class App extends Component {
 
   constructor() {
@@ -171,7 +170,7 @@ class App extends Component {
                   <li className="media">
                   <div className="media-left">
                       <a href="#"  onClick={this.onSelectRecipe.bind(this)}>
-                      <img id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
+                      <img id={r.id}style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
                       </a>
                   </div>
                   <div className="media-body">
