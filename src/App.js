@@ -5,16 +5,14 @@ import Item from './Item.js';
 import Btns from './Btns.js';
 
 import recipes from './recipes.json';
-import r35592 from './35592.json';
 
-// console.log(recipes);
 class App extends Component {
 
   constructor() {
     super();
     this.state = {
         list: [],
-        recipes: recipes.recipes
+        recipes: recipes.matches
     };
   }
 
@@ -27,20 +25,20 @@ class App extends Component {
   }
 
   onSelectRecipe(event) {
-      const id = event.target.value; //recipe identifier
-      console.log(r35592.recipe); // the dummy recipe we sre going to use (becsuse  thst's whst we hsve for now)
-      const ingredients = r35592.recipe.ingredients;
-      console.log(ingredients);
-
-      // This is what changes the component state, based on old state and props - it is
-      // returning the new component state.
-      function updateIngredientList(/* currentState, props */) {
-         return {list: ingredients};
-      };
-
-      // This is how we REQUEST a state change in react
-      this.setState(updateIngredientList);
- }
+      const id = event.target.id; //recipe identifier
+      return fetch(`https://api.yummly.com/v1/api/recipe/${id}`, {
+        headers: {
+          'X-Yummly-App-ID': 'dc1a4984',
+          'X-Yummly-App-Key': '72b6467b0f86ddd5c4eb5e4730fedbb6'}
+      })
+      .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
+      .then(json => {
+        // This is how we REQUEST a state change in react
+        this.setState(function updateIngredientList(/* currentState, props */) {
+           return {list: json.ingredientLines};
+        });
+      });
+  }
 
   onChangeHandler(event) {
    if (event.keyCode !== 13) return;
@@ -54,7 +52,7 @@ class App extends Component {
      return {list: newList};
     });
 
-    event.target.value = ''
+    event.target.value = '';
     // console.log(event.target.value);
 
   }
@@ -80,12 +78,12 @@ class App extends Component {
                   return (
                   <li className="media">
                   <div className="media-left">
-                      <a href="#" id={r.recipe_id} onClick={this.onSelectRecipe.bind(this)}>
-                      <img style={style} className="media-object" src={r.image_url} alt="Image of a recipe"/>
+                      <a href="#" onClick={this.onSelectRecipe.bind(this)}>
+                      <img  id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="Image of a recipe"/>
                       </a>
                   </div>
                   <div className="media-body">
-                     <h4 className="media-heading">{r.title}</h4>
+                     <h4 className="media-heading">{r.recipeName}</h4>
                   </div>
 
 
