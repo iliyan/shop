@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 
 import Item from './Item.js';
-import Btns from './Btns.js';
+// import Btns from './Btns.js';
 
 class App extends Component {
 
@@ -74,6 +74,7 @@ class App extends Component {
   }
 
   render() {
+    const {recipes} = this.state;
 
     return (
 
@@ -95,7 +96,7 @@ class App extends Component {
                   <li className="media">
                   <div className="media-left">
                       <a href="#" onClick={this.onSelectRecipe.bind(this)}>
-                      <img  id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="Image of a recipe"/>
+                      <img  id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
                       </a>
                   </div>
                   <div className="media-body">
@@ -125,7 +126,7 @@ class App extends Component {
             </div>
 
           <div className="row">
-            <p className="small">{recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
+            <p className="small">{recipes.attribution && recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
           </div>
         </div>
       </div>
