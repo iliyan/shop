@@ -173,6 +173,9 @@ class App extends Component {
 
                 </div>
             </div>
+            <div className="row">
+             <p className="small">{recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
+            </div>
 
         </div>
       </div>
