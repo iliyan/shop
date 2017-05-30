@@ -1,11 +1,13 @@
+// import axios from 'axios';
+// import 'isomorphic-fetch';
 import React, { Component } from 'react';
 
+//const request = require('superagent');
 
 import Item from './Item.js';
 import Btns from './Btns.js';
 
 import recipes from './recipes.json';
-import r35592 from './35592.json';
 
 // console.log(recipes);
 class App extends Component {
@@ -14,7 +16,7 @@ class App extends Component {
     super();
     this.state = {
         list: [],
-        recipes: recipes.recipes
+        recipes: recipes.matches
     };
   }
 
@@ -27,20 +29,82 @@ class App extends Component {
   }
 
   onSelectRecipe(event) {
-      const id = event.target.value; //recipe identifier
-      console.log(r35592.recipe); // the dummy recipe we sre going to use (becsuse  thst's whst we hsve for now)
-      const ingredients = r35592.recipe.ingredients;
-      console.log(ingredients);
+      const id = event.target.id; //recipe identifier
+      return fetch(`https://api.yummly.com/v1/api/recipe/${id}`, {
+       headers: {
+          'X-Yummly-App-ID': 'dc1a4984',
+          'X-Yummly-App-Key': '72b6467b0f86ddd5c4eb5e4730fedbb6'}
+      })
+      .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
+      .then(json => {
+        // This is how we REQUEST a state change in react
+        this.setState(function updateIngredientList(/* currentState, props */) {
+           return {list: json.ingredientLines};
+        });
+      });
+  }
+      // Hit the API to get the recipe (promise)
+    //   axios.get(`http://food2fork.com/api/get?key=d5f1880b2f0caa5faf7b0df84d2fd6a5&rId=${id}`)
+    //  .then(res => {
+    //    const recipe = res.data.recipe;
+    //    console.log(recipe);
+    // //    this.setState({ recipe });
+    // //    const ingredients = res.data.recipe.ingredients;
+    // //    this.setState({ ingredients });
+    //  })
+    // request.get('https://food2-api.herokuapp.com/api/get')
+    //    .query({key: 'fcd2640cf38f413660256dabdfe21136', rId: `${id}`})
+    //    .responseType('blob')
+    //    .withCredentials(true)
+        //  .buffer(true)
+        //  .parse((x) => {
+        //      console.log(x);
+        //      return x;
+         //
+        //  })
+    //    .end((error, response) => {
+//console.log(response);
+         //console.log(error);
 
-      // This is what changes the component state, based on old state and props - it is
-      // returning the new component state.
-      function updateIngredientList(/* currentState, props */) {
-         return {list: ingredients};
-      };
+    // });
 
-      // This is how we REQUEST a state change in react
-      this.setState(updateIngredientList);
- }
+    //  return fetch(`http//api.yummly.com/v1/api/recipe?_app_id=dc1a4984&_app_key=72b6467b0f86ddd5c4eb5e4730fedbb6&rId=${id}`, {
+         //   method: 'GET',
+        //   credentials: 'include',
+        //   redirect: 'follow',
+    //       mode: 'no-cors'
+         //   ,
+        //   headers: {'Accept': 'application/json', 'Accept-Encoding': 'identity'}
+    //   })
+    //   .then(response => {
+    //       console.log(response);
+    //       return response.ok ? response.json() : Promise.resolve('nada');
+    //   })
+    //   .then(json => {
+
+    //       console.log(json);
+    //        const resultPromise = response.ok ? response.json() : Promise.reject(response);
+
+    //  return resultPromise.then(function (recipe){
+    //      console.log(recipe);
+
+    //  });
+    //  })
+    //   .catch(err => console.error);
+
+    //   console.log(r35592.recipe); // the dummy recipe we sre going to use (becsuse  thst's whst we hsve for now)
+    //   const ingredients = r35592.recipe.ingredients;
+    //   console.log(ingredients);
+      //
+    //   // This is what changes the component state, based on old state and props - it is
+    //   // returning the new component state.
+    //   function updateIngredientList(/* currentState, props */) {
+    //      return {list: ingredients};
+    //   };
+      //
+    //   // This is how we REQUEST a state change in react
+    //   this.setState(updateIngredientList);
+// }
 
   onChangeHandler(event) {
    if (event.keyCode !== 13) return;
@@ -54,7 +118,7 @@ class App extends Component {
      return {list: newList};
     });
 
-    event.target.value = ''
+    event.target.value = '';
     // console.log(event.target.value);
 
   }
@@ -80,12 +144,12 @@ class App extends Component {
                   return (
                   <li className="media">
                   <div className="media-left">
-                      <a href="#" id={r.recipe_id} onClick={this.onSelectRecipe.bind(this)}>
-                      <img style={style} className="media-object" src={r.image_url} alt="Image of a recipe"/>
+                      <a href="#"  onClick={this.onSelectRecipe.bind(this)}>
+                      <img id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="Image of a recipe"/>
                       </a>
                   </div>
                   <div className="media-body">
-                     <h4 className="media-heading">{r.title}</h4>
+                     <h4 className="media-heading">{r.recipeName}</h4>
                   </div>
 
 
