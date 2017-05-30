@@ -5,9 +5,9 @@ import React, { Component } from 'react';
 //const request = require('superagent');
 
 import Item from './Item.js';
-import Btns from './Btns.js';
+//import Btns from './Btns.js';
 
-import recipes from './recipes.json';
+//import recipes from './recipes.json';
 
 // console.log(recipes);
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
     super();
     this.state = {
         list: [],
-        recipes: recipes.matches
+        recipes: []
     };
   }
 
@@ -123,7 +123,30 @@ class App extends Component {
 
   }
 
+
+  // React calls this just before rendering
+  // See https://facebook.github.io/react/docs/react-component.html#componentdidmount
+  componentDidMount() {
+      return fetch(`https://api.yummly.com/v1/api/recipes`, {
+        headers: {
+          'X-Yummly-App-ID': 'dc1a4984',
+          'X-Yummly-App-Key': '72b6467b0f86ddd5c4eb5e4730fedbb6'}
+      })
+      .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
+      .then(json => {
+        // This is how we REQUEST a state change in react
+        this.setState(function updateRecipesList(/* currentState, props */) {
+           return {recipes: json.matches};
+        });
+      });
+
+  }
+
   render() {
+    const {recipes} = this.state;
+
+
+
 
     return (
 
