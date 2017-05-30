@@ -5,9 +5,7 @@ import React, { Component } from 'react';
 //const request = require('superagent');
 
 import Item from './Item.js';
-//import Btns from './Btns.js';
-
-//import recipes from './recipes.json';
+//import Btns from './Btns.js';//import recipes from './recipes.json';
 
 class App extends Component {
 
@@ -201,7 +199,6 @@ class App extends Component {
             <div className="row">
              <p className="small">{recipes.attribution && recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
             </div>
-
         </div>
       </div>
 
