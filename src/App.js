@@ -38,8 +38,11 @@ class App extends Component {
       .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
       .then(json => {
         // This is how we REQUEST a state change in react
-        this.setState(function updateIngredientList(/* currentState, props */) {
-           return {list: json.ingredientLines};
+        this.setState(function updateIngredientList(/* currentState, props */oldState) {
+             const newList = [...json.ingredientLines ,...oldState.list ];
+             return {list: newList}
+         //  return {list: json.ingredientLines};
+
         });
       });
   }
