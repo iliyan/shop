@@ -109,10 +109,10 @@ class App extends Component {
              })}
               </ul>
             </div>
-            <div className="col-xs-8">
+            <div className="col-xs-7">
 
-                    <form>
-                      <input type="text"  onKeyUp={this.onChangeHandler.bind(this)}/>
+                    <div className="form-horizontal">
+                      <input type="text"  className="form-control" onKeyUp={this.onChangeHandler.bind(this)}/>
 
                         {this.state.list.map((x, i) => (
                             <Item
@@ -120,7 +120,7 @@ class App extends Component {
                               onClick={this.onIngredientDeleteHandler.bind(this)}>{x}</Item>
                         ))}
 
-                    </form>
+                    </div>
 
                 </div>
             </div>
