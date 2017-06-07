@@ -184,7 +184,7 @@ class App extends Component {
              })}
               </ul>
             </div>
-            <div className="col-xs-8">
+            <div className="col-xs-7">
 
                     //<form>
                     //  <input type="text"  onKeyUp={this.onChangeHandler.bind(this)}/>
@@ -197,8 +197,6 @@ class App extends Component {
                               index={i}
                               onClick={this.onIngredientDeleteHandler.bind(this)}>{x}</Item>
                         ))}
-
-                    //</form>
                     </div>
 
                 </div>
