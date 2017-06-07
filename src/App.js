@@ -155,10 +155,10 @@ class App extends Component {
 
         <div className="container">
 
-        <div className="jumbotron">
+          <div className="jumbotron">
             <h1>Shopping</h1>
             <p>This is shopping, my way...</p>
-        </div>
+          </div>
 
         <div className="container">
             <div className="row">
@@ -186,8 +186,8 @@ class App extends Component {
             </div>
             <div className="col-xs-7">
 
-                    //<form>
-                    //  <input type="text"  onKeyUp={this.onChangeHandler.bind(this)}/>
+
+                    
                     <div className="form-horizontal">
                        <input type="text" className="form-control" onKeyUp={this.onChangeHandler.bind(this)}/>
 
@@ -199,13 +199,13 @@ class App extends Component {
                         ))}
                     </div>
 
-                </div>
             </div>
-            <div className="row">
-             <p className="small">{recipes.attribution && recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
             </div>
+              <div className="row">
+                <p className="small">{recipes.attribution && recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
+              </div>
 
-        </div>
+            </div>
       </div>
 
     );
