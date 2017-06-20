@@ -162,19 +162,17 @@ class App extends Component {
 
         <div className="container">
             <div className="row">
-            <div className="col-xs-4">
+            <div className="col-xs-6">
               <ul className="media-list">
               {this.state.recipes.map(r => {
-                  const style = {width: '64px', height: '64px'};
+                 // const style = {width: '50px', height: '50px'};
 
                   return (
                   <li className="media">
                   <div className="media-left">
                       <a href="#"  onClick={this.onSelectRecipe.bind(this)}>
-                      <img id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
+                      <img id={r.id}  className="img-fluid" src={r.smallImageUrls} alt="A recipe"/>
                       </a>
-                  </div>
-                  <div className="media-body">
                      <h4 className="media-heading">{r.recipeName}</h4>
                   </div>
 
@@ -184,10 +182,10 @@ class App extends Component {
              })}
               </ul>
             </div>
-            <div className="col-xs-7">
+            <div className="col-xs-6">
 
 
-                    
+
                     <div className="form-horizontal">
                        <input type="text" className="form-control" onKeyUp={this.onChangeHandler.bind(this)}/>
 
