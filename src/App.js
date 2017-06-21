@@ -36,7 +36,8 @@ class App extends Component {
       .then(json => {
         // This is how we REQUEST a state change in react
         this.setState(function updateIngredientList(/* currentState, props */oldState) {
-             const newList = [...json.ingredientLines ,...oldState.list ];
+             const ingredientLines = json.ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
+             const newList = [...ingredientLines ,...oldState.list ];
              return {list: newList}
          //  return {list: json.ingredientLines};
 
@@ -112,7 +113,7 @@ class App extends Component {
    this.setState((oldState, props) => {
        // Making a copy of the current list because ...
        // ... splice modifies its argument and that's a no-no in react
-     const newList = [...oldState.list , newItem];
+     const newList = [...oldState.list , {text:newItem, recipe: null}];
 
      // the new state
      return {list: newList};
@@ -172,7 +173,7 @@ class App extends Component {
                       </a>
                   </div>
                   <div className="media-body">
-                     <h4 className="media-heading">{r.recipeName}</h4>
+                     <h5 className="media-heading">{r.recipeName}</h5>
                   </div>
 
 
@@ -184,12 +185,16 @@ class App extends Component {
             <div className="col-xs-8">
 
                     <form>
-                      <input type="text"  onKeyUp={this.onChangeHandler.bind(this)}/>
+                      <input className="form-control" type="text"  onKeyUp={this.onChangeHandler.bind(this)}/>
 
                         {this.state.list.map((x, i) => (
                             <Item
                               index={i}
-                              onClick={this.onIngredientDeleteHandler.bind(this)}>{x}</Item>
+                              onClick={this.onIngredientDeleteHandler.bind(this)}>
+                              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}
+                              {!x.recipe && <span>[] </span>}
+                              <span>{x.text}</span>
+                            </Item>
                         ))}
 
                     </form>
