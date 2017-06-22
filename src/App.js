@@ -39,7 +39,7 @@ class App extends Component {
       .then(json => {
         // This is how we REQUEST a state change in react
         this.setState(function updateIngredientList(/* currentState, props */oldState) {
-             const ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
+             const ingredientLines=json.ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
              const newList = [...ingredientLines ,...oldState.list ];
              return {list: newList}
          //  return {list: json.ingredientLines};
