@@ -39,7 +39,8 @@ class App extends Component {
       .then(json => {
         // This is how we REQUEST a state change in react
         this.setState(function updateIngredientList(/* currentState, props */oldState) {
-             const newList = [...json.ingredientLines ,...oldState.list ];
+             const ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
+             const newList = [...ingredientLines ,...oldState.list ];
              return {list: newList}
          //  return {list: json.ingredientLines};
 
@@ -115,7 +116,7 @@ class App extends Component {
    this.setState((oldState, props) => {
        // Making a copy of the current list because ...
        // ... splice modifies its argument and that's a no-no in react
-     const newList = [...oldState.list , newItem];
+     const newList = [...oldState.list , {text:newItem, recipe: null}];
 
      // the new state
      return {list: newList};
@@ -162,18 +163,20 @@ class App extends Component {
 
         <div className="container">
             <div className="row">
-            <div className="col-xs-6">
+            <div className="col-xs-4">
               <ul className="media-list">
               {this.state.recipes.map(r => {
-                 // const style = {width: '50px', height: '50px'};
+                 const style = {width: '50px', height: '50px'};
 
                   return (
                   <li className="media">
                   <div className="media-left">
                       <a href="#"  onClick={this.onSelectRecipe.bind(this)}>
-                      <img id={r.id}  className="img-fluid" src={r.smallImageUrls} alt="A recipe"/>
+                      <img id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
                       </a>
-                     <h4 className="media-heading">{r.recipeName}</h4>
+                  </div>
+                  <div className="media-body">
+                     <h5 className="media-heading">{r.recipeName}</h5>
                   </div>
 
 
@@ -182,20 +185,25 @@ class App extends Component {
              })}
               </ul>
             </div>
-            <div className="col-xs-6">
+            <div className="col-xs-8">
+                <form>
 
 
 
-                    <div className="form-horizontal">
-                       <input type="text" className="form-control" onKeyUp={this.onChangeHandler.bind(this)}/>
+
+                       <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
 
 
                         {this.state.list.map((x, i) => (
                             <Item
                               index={i}
-                              onClick={this.onIngredientDeleteHandler.bind(this)}>{x}</Item>
+                              onClick={this.onIngredientDeleteHandler.bind(this)}>
+                              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}
+                              {!x.recipe && <span>[] </span>}
+                              <span>{x.text}</span>
+                              </Item>
                         ))}
-                    </div>
+                    </form>
 
             </div>
             </div>
