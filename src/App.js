@@ -186,7 +186,7 @@ class App extends Component {
               </ul>
             </div>
             <div className="col-xs-8">
-                <form>
+                <div className = "form-horizontal">
 
 
 
@@ -203,7 +203,7 @@ class App extends Component {
                               <span>{x.text}</span>
                               </Item>
                         ))}
-                    </form>
+                </div>
 
             </div>
             </div>
