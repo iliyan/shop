@@ -169,15 +169,15 @@ class App extends Component {
                  const style = {width: '50px', height: '50px'};
 
                   return (
-                  <li className="media">
-                  <div className="media-left">
+                  <li key={r.id} className="media">
+
                       <a href="#"  onClick={this.onSelectRecipe.bind(this)}>
                       <img id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
                       </a>
-                  </div>
-                  <div className="media-body">
+
+
                      <h5 className="media-heading">{r.recipeName}</h5>
-                  </div>
+
 
 
                   </li>
@@ -186,7 +186,7 @@ class App extends Component {
               </ul>
             </div>
             <div className="col-xs-8">
-                <div className = "form-horizontal">
+
 
 
 
@@ -199,11 +199,11 @@ class App extends Component {
                               index={i}
                               onClick={this.onIngredientDeleteHandler.bind(this)}>
                               {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}
-                              {!x.recipe && <span>[] </span>}
+                              {!x.recipe && <span> </span>}
                               <span>{x.text}</span>
                               </Item>
                         ))}
-                </div>
+
 
             </div>
             </div>
