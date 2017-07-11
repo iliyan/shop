@@ -55,10 +55,10 @@ class App extends Component {
 
      const newItem = event.target.value; // See MDN for JS event definitions
      this.setState((oldState, props) => {
-     const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
+      const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
 
-     // the new state
-     return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
+      // the new state
+      return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
      });
   }
 
@@ -118,15 +118,13 @@ class App extends Component {
              <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
             {/*//<p className="small"><a href={this.state.recipe.source.sourceRecipeUrl}>[{this.state.recipe.name}] </a></p>*/}
 
-  {Objects.keys(this.state.list).map((identifier, i, list) => { //  Getting the ingredients for each selected recipe
+  {Object.keys(this.state.list).map((identifier, i, list) => { //  Getting the ingredients for each selected recipe
       const fromRecipe = this.state.recipes.find(x => x.id === identifier);
       const lines = [
-          <h5><a target="new"
-  href={fromRecipe.source.sourceRecipeUrl}>[{fromRecipe.name}] </a></h5>
+          <h5><a target="new" href={fromRecipe.source.sourceRecipeUrl}>[{fromRecipe.name}] </a></h5>
       ];
-      ingredients.forEach((x, i) => lines.push(
-          <Item index={i} onClick={() =>
-  this.onIngredientDeleteHandler(identifier, i)}>
+    fromRecipe.ingredients.forEach((x, i) => lines.push(
+          <Item index={i} onClick={() => this.onIngredientDeleteHandler(identifier, i)}>
             <span>{x}</span>
         </Item>));
       return lines;
