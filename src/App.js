@@ -15,18 +15,26 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-        list: [],
+        list: {},
         recipes: []
     };
   }
 
-  onIngredientDeleteHandler(index) {
-      this.setState((oldState, props) => {
-         const newList = [...oldState.list]; // Making a copy of the current list because ...
-         newList.splice(index,1); // ... splice modifies its argument and that's a no-no in react
-         return {list: newList};
-      });
-  }
+onIngredientDeleteHandler(identifier, index) {
+    this.setState((oldState, props) => {
+       const newList = [...oldState.list[identifier]]; // ...тук ...
+       newList.splice(index,1);
+       return {list: {...oldState.list, identifier:newList}}; // ... и тук ...
+    });
+}
+
+ // onIngredientDeleteHandler(index) {
+    //  this.setState((oldState, props) => {
+    //     const newList = [...oldState.list]; // Making a copy of the current list because ...
+    //     newList.splice(index,1); // ... splice modifies its argument and that's a no-no in react
+    //     return {list: newList};
+    //  });
+ // }
 
   onSelectRecipe(event) {
       const id = event.target.id; //recipe identifier
@@ -39,93 +47,54 @@ class App extends Component {
       .then(json => {
         // This is how we REQUEST a state change in react
         this.setState(function updateIngredientList(/* currentState, props */oldState) {
-             const ingredientLines=json.ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
-             const newList = [...ingredientLines ,...oldState.list ];
-             return {list: newList}
+
+          const ingredientLines=json.ingredientLines;
+          if(oldState.list[id]) {
+            return {list: {...oldState.list, id: []}} // If we have ingredients from this recipe - delete them]
+
+          };
+          return {list: {...oldState.list, id: json.ingredientLines}}; // If we don't have ingredients from this recipe - add them
+            // const ingredientLines=json.ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
+            // const newList = [...ingredientLines ,...oldState.list ];
+            // return {list: newList}
          //  return {list: json.ingredientLines};
 
-        });
-      });
+     }
+ });
+
   }
-      // Hit the API to get the recipe (promise)
-    //   axios.get(`http://food2fork.com/api/get?key=d5f1880b2f0caa5faf7b0df84d2fd6a5&rId=${id}`)
-    //  .then(res => {
-    //    const recipe = res.data.recipe;
-    //    console.log(recipe);
-    // //    this.setState({ recipe });
-    // //    const ingredients = res.data.recipe.ingredients;
-    // //    this.setState({ ingredients });
-    //  })
-    // request.get('https://food2-api.herokuapp.com/api/get')
-    //    .query({key: 'fcd2640cf38f413660256dabdfe21136', rId: `${id}`})
-    //    .responseType('blob')
-    //    .withCredentials(true)
-        //  .buffer(true)
-        //  .parse((x) => {
-        //      console.log(x);
-        //      return x;
-         //
-        //  })
-    //    .end((error, response) => {
-//console.log(response);
-         //console.log(error);
 
-    // });
 
-    //  return fetch(`http//api.yummly.com/v1/api/recipe?_app_id=dc1a4984&_app_key=72b6467b0f86ddd5c4eb5e4730fedbb6&rId=${id}`, {
-         //   method: 'GET',
-        //   credentials: 'include',
-        //   redirect: 'follow',
-    //       mode: 'no-cors'
-         //   ,
-        //   headers: {'Accept': 'application/json', 'Accept-Encoding': 'identity'}
-    //   })
-    //   .then(response => {
-    //       console.log(response);
-    //       return response.ok ? response.json() : Promise.resolve('nada');
-    //   })
-    //   .then(json => {
+   onChangeHandler(event) {
+       const LOOSE_INGREDIENTS_KEY = ''; // Empty string
 
-    //       console.log(json);
-    //        const resultPromise = response.ok ? response.json() : Promise.reject(response);
+       if (event.keyCode !== 13) return;
 
-    //  return resultPromise.then(function (recipe){
-    //      console.log(recipe);
+       const newItem = event.target.value; // See MDN for JS event definitions
+       this.setState((oldState, props) => {
+       const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
 
-    //  });
-    //  })
-    //   .catch(err => console.error);
+   // the new state
+       return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
+       });
+   }
 
-    //   console.log(r35592.recipe); // the dummy recipe we sre going to use (becsuse  thst's whst we hsve for now)
-    //   const ingredients = r35592.recipe.ingredients;
-    //   console.log(ingredients);
-      //
-    //   // This is what changes the component state, based on old state and props - it is
-    //   // returning the new component state.
-    //   function updateIngredientList(/* currentState, props */) {
-    //      return {list: ingredients};
-    //   };
-      //
-    //   // This is how we REQUEST a state change in react
-    //   this.setState(updateIngredientList);
-// }
-
-  onChangeHandler(event) {
-   if (event.keyCode !== 13) return;
-   const newItem = event.target.value; // See MDN for JS event definitions
-   this.setState((oldState, props) => {
+ // onChangeHandler(event) {
+ //  if (event.keyCode !== 13) return;
+ //  const newItem = event.target.value; // See MDN for JS event definitions
+ //  this.setState((oldState, props) => {
        // Making a copy of the current list because ...
        // ... splice modifies its argument and that's a no-no in react
-     const newList = [...oldState.list , {text:newItem, recipe: null}];
+//     const newList = [...oldState.list , {text:newItem, recipe: null}];
 
      // the new state
-     return {list: newList};
-    });
+//     return {list: newList};
+//    });
 
-    event.target.value = '';
+//    event.target.value = '';
     // console.log(event.target.value);
 
-  }
+ // }
 
 
   // React calls this just before rendering
@@ -192,17 +161,32 @@ class App extends Component {
 
 
                        <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
+                        //<p className="small"><a href={this.state.recipe.source.sourceRecipeUrl}>[{this.state.recipe.name}] </a></p>
 
+  {Objects.keys(this.state.list).map((identifier, i, list) => { //  Getting the ingredients for each selected recipe
+      const fromRecipe = this.state.recipes.find(x => x.id === identifier);
+      const lines = [
+          <h5><a target="new"
+  href={fromRecipe.source.sourceRecipeUrl}>[{fromRecipe.name}] </a></h5>
+      ];
+      ingredients.forEach((x, i) => lines.push(
+          <Item index={i} onClick={() =>
+  this.onIngredientDeleteHandler(identifier, i)}>
+            <span>{x}</span>
+        </Item>));
+      return lines;
+  }
 
-                        {this.state.list.map((x, i) => (
-                            <Item
-                              index={i}
-                              onClick={this.onIngredientDeleteHandler.bind(this)}>
-                              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}
-                              {!x.recipe && <span> </span>}
-                              <span>{x.text}</span>
-                              </Item>
-                        ))}
+                //        {this.state.list.map((x, i) => (
+                //            <Item
+                //              index={i}
+                //              onClick={this.onIngredientDeleteHandler.bind(this)}>
+
+                //              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}
+                //              {!x.recipe && <span> </span>}
+                //              <span>{x.text}</span>
+                //              </Item>
+                //        ))}
 
 
             </div>
