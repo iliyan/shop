@@ -1,11 +1,7 @@
-// import axios from 'axios';
 // import 'isomorphic-fetch';
 import React, { Component } from 'react';
 
-//const request = require('superagent');
-
 import Item from './Item.js';
-//import Btns from './Btns.js';//import recipes from './recipes.json';
 
 class App extends Component {
 
@@ -17,21 +13,13 @@ class App extends Component {
     };
   }
 
-onIngredientDeleteHandler(identifier, index) {
-    this.setState((oldState, props) => {
-       const newList = [...oldState.list[identifier]]; // ...тук ...
-       newList.splice(index,1);
-       return {list: {...oldState.list, identifier:newList}}; // ... и тук ...
-    });
-}
-
- // onIngredientDeleteHandler(index) {
-    //  this.setState((oldState, props) => {
-    //     const newList = [...oldState.list]; // Making a copy of the current list because ...
-    //     newList.splice(index,1); // ... splice modifies its argument and that's a no-no in react
-    //     return {list: newList};
-    //  });
- // }
+  onIngredientDeleteHandler(identifier, index) {
+      this.setState((oldState, props) => {
+         const newList = [...oldState.list[identifier]]; // ...тук ...
+         newList.splice(index,1);
+         return {list: {...oldState.list, identifier:newList}}; // ... и тук ...
+      });
+  }
 
   onSelectRecipe(event) {
       const id = event.target.id; //recipe identifier
@@ -49,50 +37,30 @@ onIngredientDeleteHandler(identifier, index) {
           if(oldState.list[id]) {
             return {list: {...oldState.list, id: []}} // If we have ingredients from this recipe - delete them]
 
-          };
+          }
           return {list: {...oldState.list, id: json.ingredientLines}}; // If we don't have ingredients from this recipe - add them
             // const ingredientLines=json.ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
             // const newList = [...ingredientLines ,...oldState.list ];
             // return {list: newList}
          //  return {list: json.ingredientLines};
 
-     }
- });
+        });
+      });
+  };
 
-  }
+  onChangeHandler(event) {
+     const LOOSE_INGREDIENTS_KEY = ''; // Empty string
 
+     if (event.keyCode !== 13) return;
 
-   onChangeHandler(event) {
-       const LOOSE_INGREDIENTS_KEY = ''; // Empty string
-
-       if (event.keyCode !== 13) return;
-
-       const newItem = event.target.value; // See MDN for JS event definitions
-       this.setState((oldState, props) => {
-       const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
-
-   // the new state
-       return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
-       });
-   }
-
- // onChangeHandler(event) {
- //  if (event.keyCode !== 13) return;
- //  const newItem = event.target.value; // See MDN for JS event definitions
- //  this.setState((oldState, props) => {
-       // Making a copy of the current list because ...
-       // ... splice modifies its argument and that's a no-no in react
-//     const newList = [...oldState.list , {text:newItem, recipe: null}];
+     const newItem = event.target.value; // See MDN for JS event definitions
+     this.setState((oldState, props) => {
+     const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
 
      // the new state
-//     return {list: newList};
-//    });
-
-//    event.target.value = '';
-    // console.log(event.target.value);
-
- // }
-
+     return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
+     });
+  }
 
   // React calls this just before rendering
   // See https://facebook.github.io/react/docs/react-component.html#componentdidmount
@@ -114,9 +82,6 @@ onIngredientDeleteHandler(identifier, index) {
 
   render() {
     const {recipes} = this.state;
-
-
-
 
     return (
 
@@ -141,10 +106,7 @@ onIngredientDeleteHandler(identifier, index) {
                       <img id={r.id}style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
                       </a>
 
-
                      <h5 className="media-heading">{r.recipeName}</h5>
-
-
 
                   </li>
                  );
@@ -153,12 +115,8 @@ onIngredientDeleteHandler(identifier, index) {
             </div>
             <div className="col-xs-8">
 
-
-
-
-
-                       <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
-                        //<p className="small"><a href={this.state.recipe.source.sourceRecipeUrl}>[{this.state.recipe.name}] </a></p>
+             <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
+            {/*//<p className="small"><a href={this.state.recipe.source.sourceRecipeUrl}>[{this.state.recipe.name}] </a></p>*/}
 
   {Objects.keys(this.state.list).map((identifier, i, list) => { //  Getting the ingredients for each selected recipe
       const fromRecipe = this.state.recipes.find(x => x.id === identifier);
@@ -172,18 +130,18 @@ onIngredientDeleteHandler(identifier, index) {
             <span>{x}</span>
         </Item>));
       return lines;
-  }
+  })}
 
-                //        {this.state.list.map((x, i) => (
-                //            <Item
-                //              index={i}
-                //              onClick={this.onIngredientDeleteHandler.bind(this)}>
+                {/*//        {this.state.list.map((x, i) => (*/}
+                {/*//            <Item*/}
+                {/*//              index={i}*/}
+                {/*//              onClick={this.onIngredientDeleteHandler.bind(this)}>*/}
 
-                //              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}
-                //              {!x.recipe && <span> </span>}
-                //              <span>{x.text}</span>
-                //              </Item>
-                //        ))}
+                {/*//              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}*/}
+                {/*//              {!x.recipe && <span> </span>}*/}
+                {/*//              <span>{x.text}</span>*/}
+                {/*//              </Item>*/}
+                {/*//        ))}*/}
 
 
             </div>
