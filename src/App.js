@@ -1,11 +1,5 @@
-// import axios from 'axios';
-// import 'isomorphic-fetch';
 import React, { Component } from 'react';
-
-//const request = require('superagent');
-
 import Item from './Item.js';
-//import Btns from './Btns.js';//import recipes from './recipes.json';
 
 class App extends Component {
 
@@ -17,21 +11,14 @@ class App extends Component {
     };
   }
 
-onIngredientDeleteHandler(identifier, index) {
+  onIngredientDeleteHandler(identifier, index) {
     this.setState((oldState, props) => {
        const newList = [...oldState.list[identifier]]; // ...тук ...
        newList.splice(index,1);
        return {list: {...oldState.list, identifier:newList}}; // ... и тук ...
     });
-}
+  }
 
- // onIngredientDeleteHandler(index) {
-    //  this.setState((oldState, props) => {
-    //     const newList = [...oldState.list]; // Making a copy of the current list because ...
-    //     newList.splice(index,1); // ... splice modifies its argument and that's a no-no in react
-    //     return {list: newList};
-    //  });
- // }
 
   onSelectRecipe(event) {
       const id = event.target.id; //recipe identifier
@@ -49,17 +36,17 @@ onIngredientDeleteHandler(identifier, index) {
           if(oldState.list[id]) {
             return {list: {...oldState.list, id: []}} // If we have ingredients from this recipe - delete them]
 
-          };
+          }
           return {list: {...oldState.list, id: json.ingredientLines}}; // If we don't have ingredients from this recipe - add them
             // const ingredientLines=json.ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
             // const newList = [...ingredientLines ,...oldState.list ];
             // return {list: newList}
          //  return {list: json.ingredientLines};
 
-     }
- });
+     });
+   });
 
-  }
+  };
 
 
    onChangeHandler(event) {
@@ -69,29 +56,11 @@ onIngredientDeleteHandler(identifier, index) {
 
        const newItem = event.target.value; // See MDN for JS event definitions
        this.setState((oldState, props) => {
-       const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
-
-   // the new state
-       return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
+        const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
+         // the new state
+        return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
        });
    }
-
- // onChangeHandler(event) {
- //  if (event.keyCode !== 13) return;
- //  const newItem = event.target.value; // See MDN for JS event definitions
- //  this.setState((oldState, props) => {
-       // Making a copy of the current list because ...
-       // ... splice modifies its argument and that's a no-no in react
-//     const newList = [...oldState.list , {text:newItem, recipe: null}];
-
-     // the new state
-//     return {list: newList};
-//    });
-
-//    event.target.value = '';
-    // console.log(event.target.value);
-
- // }
 
 
   // React calls this just before rendering
@@ -114,9 +83,6 @@ onIngredientDeleteHandler(identifier, index) {
 
   render() {
     const {recipes} = this.state;
-
-
-
 
     return (
 
@@ -144,8 +110,6 @@ onIngredientDeleteHandler(identifier, index) {
 
                      <h5 className="media-heading">{r.recipeName}</h5>
 
-
-
                   </li>
                  );
              })}
@@ -157,41 +121,36 @@ onIngredientDeleteHandler(identifier, index) {
 
 
 
-                       <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
-                        //<p className="small"><a href={this.state.recipe.source.sourceRecipeUrl}>[{this.state.recipe.name}] </a></p>
+            <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
 
-  {Objects.keys(this.state.list).map((identifier, i, list) => { //  Getting the ingredients for each selected recipe
+
+  {Object.keys(this.state.list).map((identifier, i, list) => { //  Getting the ingredients for each selected recipe
       const fromRecipe = this.state.recipes.find(x => x.id === identifier);
       const lines = [
-          <h5><a target="new"
-  href={fromRecipe.source.sourceRecipeUrl}>[{fromRecipe.name}] </a></h5>
+          <h5><a target="new" href={fromRecipe.source.sourceRecipeUrl}>[{fromRecipe.name}] </a></h5>
       ];
-      ingredients.forEach((x, i) => lines.push(
-          <Item index={i} onClick={() =>
-  this.onIngredientDeleteHandler(identifier, i)}>
+     fromRecipe.ingredients.forEach((x, i) => lines.push(
+          <Item index={i} onClick={() =>  this.onIngredientDeleteHandler(identifier, i)}>
             <span>{x}</span>
         </Item>));
       return lines;
-  }
-
-                //        {this.state.list.map((x, i) => (
-                //            <Item
-                //              index={i}
-                //              onClick={this.onIngredientDeleteHandler.bind(this)}>
-
-                //              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}
-                //              {!x.recipe && <span> </span>}
-                //              <span>{x.text}</span>
-                //              </Item>
-                //        ))}
-
-
+  })}
             </div>
             </div>
-            <div className="row">
-             <p className="small">{recipes.attribution && recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
+  {/*//        {this.state.list.map((x, i) => (*/}
+            {/*//            <Item*/}
+            {/*//              index={i}*/}
+            {/*//              onClick={this.onIngredientDeleteHandler.bind(this)}>*/}
+
+            {/*//              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}*/}
+            {/*//              {!x.recipe && <span> </span>}*/}
+            {/*//              <span>{x.text}</span>*/}
+            {/*//              </Item>*/}
+            {/*//        ))}*/}            <div className="row">
+                <p className="small">{recipes.attribution && recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
+              </div>
+
             </div>
-        </div>
       </div>
 
     );

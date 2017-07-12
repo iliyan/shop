@@ -18,9 +18,9 @@ class Item extends Component {
 
     return (
         <div className="container">
-        <div className="container">
-        // <a href={this.state.list.recipe.source.sourceRecipeUrl}>[{this.state.list.recipe.name}] </a>
-        </div>
+
+
+        
         <div className="checkbox">
           <label>
            <input type="checkbox" id="check-one"/>
