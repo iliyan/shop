@@ -30,19 +30,13 @@ class App extends Component {
       .then(response => response.ok ? response.json() : Promise.reject(response.statusText))
       .then(json => {
         // This is how we REQUEST a state change in react
-        this.setState(function updateIngredientList(/* currentState, props */oldState) {
+        this.setState((/* currentState, props */oldState) => {
 
           const ingredientLines=json.ingredientLines;
           if(oldState.list[id]) {
-            return {list: {...oldState.list, id: []}} // If we have ingredients from this recipe - delete them]
-
+            return {list: {...oldState.list, [id]: []}} // If we have ingredients from this recipe - delete them]
           }
-          return {list: {...oldState.list, id: json.ingredientLines}}; // If we don't have ingredients from this recipe - add them
-            // const ingredientLines=json.ingredientLines.map(ingredient => ({text: ingredient, recipe: json}));
-            // const newList = [...ingredientLines ,...oldState.list ];
-            // return {list: newList}
-         //  return {list: json.ingredientLines};
-
+          return {list: {...oldState.list, [id]: json.ingredientLines}}; // If we don't have ingredients from this recipe - add them
      });
    });
 
@@ -82,7 +76,7 @@ class App extends Component {
   }
 
   render() {
-    const {recipes} = this.state;
+    const {recipes, list} = this.state;
 
     return (
 
@@ -97,14 +91,14 @@ class App extends Component {
             <div className="row">
             <div className="col-xs-4">
               <ul className="media-list">
-              {this.state.recipes.map(r => {
+              {recipes.map(r => {
                  const style = {width: '50px', height: '50px'};
 
                   return (
                   <li key={r.id} className="media">
 
                       <a href="#"  onClick={this.onSelectRecipe.bind(this)}>
-                      <img id={r.id}style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
+                      <img id={r.id} style={style} className="media-object" src={r.smallImageUrls} alt="A recipe"/>
                       </a>
 
 
@@ -116,25 +110,21 @@ class App extends Component {
               </ul>
             </div>
             <div className="col-xs-8">
+              <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
 
+                {Object.keys(list).map((identifier, i, values) => { //  Getting the ingredients for each selected recipe
+                  const fromRecipe = recipes.find(x => x.id === identifier) || {};
+                  const lines = [
+                    <h5><a target="new" href={fromRecipe.id}>[{fromRecipe.recipeName}] </a></h5>
+                  ];
+  
+                  fromRecipe.ingredients && fromRecipe.ingredients.forEach((x, i) => lines.push(
+                      <Item index={i} onClick={() => this.onIngredientDeleteHandler(identifier, i)}>
+                        <span>{x}</span>
+                      </Item>));
 
-
-
-
-            <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
-
-
-  {Object.keys(this.state.list).map((identifier, i, list) => { //  Getting the ingredients for each selected recipe
-      const fromRecipe = this.state.recipes.find(x => x.id === identifier);
-      const lines = [
-          <h5><a target="new" href={fromRecipe.source.sourceRecipeUrl}>[{fromRecipe.name}] </a></h5>
-      ];
-     fromRecipe.ingredients.forEach((x, i) => lines.push(
-          <Item index={i} onClick={() =>  this.onIngredientDeleteHandler(identifier, i)}>
-            <span>{x}</span>
-        </Item>));
-      return lines;
-  })}
+                  return lines;
+                })}
             </div>
             </div>
   {/*//        {this.state.list.map((x, i) => (*/}
