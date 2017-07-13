@@ -17,7 +17,8 @@ class App extends Component {
     this.setState((oldState, props) => {
        const newList = [...oldState.list[identifier]]; // ...тук ...
        newList.splice(index,1);
-       return {list: {...oldState.list, identifier:newList}}; // ... и тук ...
+       const list = {...oldState.list, [identifier]:newList};
+       return {list}; // ... и тук ...
     });
   }
 
