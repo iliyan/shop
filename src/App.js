@@ -115,7 +115,7 @@ class App extends Component {
                 {Object.keys(list).map((identifier, i, values) => { //  Getting the ingredients for each selected recipe
                   const fromRecipe = recipes.find(x => x.id === identifier) || {};
                   const lines = [
-                    <h5><a target="new" href={fromRecipe.id}>[{fromRecipe.recipeName}] </a></h5>
+                    <h5><a target="new" href={`http://www.yummly.co/#recipe/${fromRecipe.id}`}>[{fromRecipe.recipeName}] </a></h5>
                   ];
   
                   fromRecipe.ingredients && fromRecipe.ingredients.forEach((x, i) => lines.push(
