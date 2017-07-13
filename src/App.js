@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import Item from './Item.js';
 
 class App extends Component {
+  
+  static BULK_INGREDIENTS_RECIPE = {id:'bulk', recipeName:'Bulk Ingredients'};
 
-  constructor() {
-    super();
+  constructor(opts) {
+    super(opts);
     this.state = {
-        list: {},
-        recipes: []
+      list: {'bulk': []},
+      recipes: [...App.BULK_INGREDIENTS_RECIPE]
     };
   }
 
@@ -42,19 +44,18 @@ class App extends Component {
 
   };
 
+  onChangeHandler(event) {
+    if (event.keyCode !== 13) return;
 
-   onChangeHandler(event) {
-       const LOOSE_INGREDIENTS_KEY = ''; // Empty string
-
-       if (event.keyCode !== 13) return;
-
-       const newItem = event.target.value; // See MDN for JS event definitions
-       this.setState((oldState, props) => {
-        const newList = [...oldState.list[LOOSE_INGREDIENTS_KEY] , newItem];
-         // the new state
-        return {list: {...oldState.list, LOOSE_INGREDIENTS_KEY:newList}};
-       });
-   }
+    const newItem = event.target.value; // See MDN for JS event definitions
+    event.target.setSelectionRange(0,newItem.length+1);
+        
+    this.setState((oldState, props) => {
+      const ingredients = oldState.list ? oldState.list[App.BULK_INGREDIENTS_RECIPE.id]: [];
+      // the new state
+      return {list: {...oldState.list, [App.BULK_INGREDIENTS_RECIPE.id]: [...ingredients, newItem]}};
+    });
+  }
 
 
   // React calls this just before rendering
@@ -69,7 +70,7 @@ class App extends Component {
       .then(json => {
         // This is how we REQUEST a state change in react
         this.setState(function updateRecipesList(/* currentState, props */) {
-           return {recipes: json.matches};
+           return {recipes: [...json.matches, App.BULK_INGREDIENTS_RECIPE]};
         });
       });
 
@@ -113,32 +114,31 @@ class App extends Component {
               <input  className="form-control" type="text" onKeyUp={this.onChangeHandler.bind(this)}/>
 
                 {Object.keys(list).map((identifier, i, values) => { //  Getting the ingredients for each selected recipe
-                  const fromRecipe = recipes.find(x => x.id === identifier) || {};
-                  const lines = [
-                    <h5><a target="new" href={`http://www.yummly.co/#recipe/${fromRecipe.id}`}>[{fromRecipe.recipeName}] </a></h5>
-                  ];
-  
-                  fromRecipe.ingredients && fromRecipe.ingredients.forEach((x, i) => lines.push(
-                      <Item index={i} onClick={() => this.onIngredientDeleteHandler(identifier, i)}>
-                        <span>{x}</span>
-                      </Item>));
+                  const components = [];
 
-                  return lines;
+                  const arecipe = recipes.find(x => x.id === identifier);
+                  if(!arecipe) return null;
+                  
+                  const ingredients = list[arecipe.id];
+                  if (ingredients) {
+                    components.push(
+                        (arecipe.id === 'bulk')
+                            ? <h5>[{arecipe.recipeName}]</h5>
+                            : <h5><a target="new" href={`http://www.yummly.co/#recipe/${arecipe.id}`}>[{arecipe.recipeName}]</a></h5>);
+
+                    ingredients.forEach((x, i) => components.push(
+                        <Item index={i} onClick={() => this.onIngredientDeleteHandler(identifier, i)}>
+                          <span>{x}</span>
+                        </Item>));
+                  }
+
+                  return components;
                 })}
             </div>
             </div>
-  {/*//        {this.state.list.map((x, i) => (*/}
-            {/*//            <Item*/}
-            {/*//              index={i}*/}
-            {/*//              onClick={this.onIngredientDeleteHandler.bind(this)}>*/}
-
-            {/*//              {x.recipe && <a target="new" href={x.recipe.source.sourceRecipeUrl}>[{x.recipe.name}] </a>}*/}
-            {/*//              {!x.recipe && <span> </span>}*/}
-            {/*//              <span>{x.text}</span>*/}
-            {/*//              </Item>*/}
-            {/*//        ))}*/}            <div className="row">
+            <div className="row">
                 <p className="small">{recipes.attribution && recipes.attribution.text} <a href='http://www.yummly.co/recipes'><img alt='Yummly' src='https://static.yummly.co/api-logo.png'/></a></p>
-              </div>
+            </div>
 
             </div>
       </div>
